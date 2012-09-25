@@ -14,7 +14,7 @@
     "rotation",
     "pipes"
   ],
-  "repository": "git://github.com/brycebaril/smart-tee",
+  "repository": {"type": "git", "url": "http://github.com/brycebaril/smart-tee.git"},
   "bin": { "smart-tee": "./bin/smart-tee.js" },
   "main": "./bin/smart-tee",
   "engines": { "node": "*" }
