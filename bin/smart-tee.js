@@ -7,7 +7,6 @@ var nconf = require("nconf");
 // Hierarchy: ARGV > ENV > Specified config file > defaults
 nconf.argv().env();
 if (process.argv[2] && process.argv[2].match(/\.json$/i)) {
-  console.log(process.argv[2]);
   nconf.add("local", {type: "file", file: process.argv[2]})
 }
 
@@ -18,12 +17,15 @@ var echo = {stream: process.stdout};
 
 // output stream providers
 var stream_providers = [];
+nconf.get("PROVIDERS").forEach(function (script) {
+  var provider = require(script).create(nconf);
+  stream_providers.push(provider);
+  provider.on("repipe", repipe);
+});
+
 if (nconf.get("echo")) {
   stream_providers.push(echo);
 }
-var time_file = require("../lib/time_file.js").createTimeFile(nconf);
-stream_providers.push(time_file);
-time_file.on("repipe", repipe);
 
 // if no output streams, print usage and exit
 if (!stream_providers.length) {
