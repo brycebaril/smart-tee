@@ -2,7 +2,6 @@ var nconf = require("nconf");
 
 // Usage: smart-tee.js config.json OPTION=...
 // OPTIONS can be defined in ARGV, ENV, specified config.json
-// Default values are stored in defaults.json
 
 // Hierarchy: ARGV > ENV > Specified config file > defaults
 nconf.argv().env();
