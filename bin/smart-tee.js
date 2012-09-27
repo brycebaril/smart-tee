@@ -38,13 +38,17 @@ function repipe() {
   process.stdin.pause();
   process.stdin.removeAllListeners();
   if (process.stdin.readable) {
-    process.stdin.on("end", function () {
-      process.exit();
-    });
+    process.stdin.on("end", done);
     // pause, pipeline all output streams, resume(?)
     stream_providers.forEach(function (provider) {
       process.stdin.pipe(provider.stream);
     });
     process.stdin.resume();
   }
+}
+
+function done() {
+  stream_providers.forEach(function (provider) {
+    provider.done();
+  });
 }
