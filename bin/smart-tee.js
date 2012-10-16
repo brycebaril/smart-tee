@@ -1,4 +1,5 @@
 var nconf = require("nconf");
+var fs = require("fs");
 
 // Usage: smart-tee.js config.json OPTION=...
 // OPTIONS can be defined in ARGV, ENV, specified config.json
@@ -17,6 +18,11 @@ var echo = {stream: process.stdout};
 // output stream providers
 var stream_providers = [];
 nconf.get("PROVIDERS").forEach(function (script) {
+  var exists = fs.existsSync(script);
+  if (!exists) {
+    console.error("Unable to find provider %s", script);
+    return;
+  }
   var provider = require(script).create(nconf);
   stream_providers.push(provider);
   provider.on("repipe", repipe);
