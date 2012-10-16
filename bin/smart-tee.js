@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var nconf = require("nconf");
 var fs = require("fs");
 
