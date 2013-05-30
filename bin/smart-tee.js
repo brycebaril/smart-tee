@@ -19,7 +19,7 @@ var echo = {stream: process.stdout};
 
 // output stream providers
 var stream_providers = [];
-nconf.get("PROVIDERS").forEach(function (script) {
+(nconf.get("PROVIDERS") || []).forEach(function (script) {
   var exists = fs.existsSync(script);
   if (!exists) {
     console.error("Unable to find provider %s", script);

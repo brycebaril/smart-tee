@@ -1,5 +1,8 @@
 # smart-tee
 
+==Note!==
+This package currently does not yet work with 0.10.x+ I'll be releasing an update soon.
+
 A node.js "smart" work-alike to the unix "tee" command. Takes stdin and pipes it to any arbitrary streams you configure.
 
 For example, let's say you wanted to run your program and pipe the output to all of {console, rotated log files, POST to your tsdb}. This lets you do that via:
@@ -35,8 +38,10 @@ TODO
 
 # TODO
 
+* Tests
 * More work
-  * allow usage to prite usage based on loaded providers
+  * usage
+  * allow usage to write usage based on loaded providers
   * prepare for new streams2 work
 * Documentation
 * More streams
