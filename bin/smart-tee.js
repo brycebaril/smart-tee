@@ -1,62 +1,50 @@
 #!/usr/bin/env node
 
-var nconf = require("nconf");
-var fs = require("fs");
+var argv = require("optimist").argv
+var path = require("path")
 
-// Usage: smart-tee.js config.json OPTION=...
-// OPTIONS can be defined in ARGV, ENV, specified config.json
+// Usage: smart-tee.js config.json --s stream --s stream --option blah...
 
-// Hierarchy: ARGV > ENV > Specified config file > defaults
-nconf.argv().env();
-if (process.argv[2] && process.argv[2].match(/\.json$/i)) {
-  nconf.add("local", {type: "file", file: process.argv[2]})
+var simpleStreams = {
+  stdout: process.stdout,
+  stderr: process.stderr,
 }
 
-// No default streams, if "echo" is true, simplest stream will pipe everything to stdout.
-var echo = {stream: process.stdout};
+// output streams
+var streamModules = argv.s
+if (!streamModules) streamModules = []
+if (!Array.isArray(streamModules)) streamModules = [streamModules]
 
-// Require any specified stream definitions
+var outStreams = []
+if (!streamModules.length) {
+  console.error("No ouptut stream specified, defaulting to stdout.")
+  streamModules.push("stdout")
+}
 
-// output stream providers
-var stream_providers = [];
-(nconf.get("PROVIDERS") || []).forEach(function (script) {
-  var exists = fs.existsSync(script);
-  if (!exists) {
-    console.error("Unable to find provider %s", script);
-    return;
+streamModules.forEach(function (module) {
+  if (simpleStreams[module]) {
+    outStreams.push(simpleStreams[module])
   }
-  var provider = require(script).create(nconf);
-  stream_providers.push(provider);
-  provider.on("repipe", repipe);
-});
+  else {
+    var mod
+    try {
+      mod = require(module)
+    }
+    catch (e) {
+      if (!/Cannot find module/.exec(e)) throw e
+      if (/^(?:\/|\.)/.exec(module)) throw e
+      mod = require(path.join(process.cwd(), module))
+    }
+    outStreams.push(mod(argv))
+  }
+})
 
-if (nconf.get("echo")) {
-  stream_providers.push(echo);
-}
+start()
 
-// if no output streams, print usage and exit
-if (!stream_providers.length) {
-  console.log("TODO Usage...");
-  process.exit(1);
-}
-
-repipe();
-
-function repipe() {
-  process.stdin.pause();
-  process.stdin.removeAllListeners();
+function start() {
   if (process.stdin.readable) {
-    process.stdin.on("end", done);
-    // pause, pipeline all output streams, resume(?)
-    stream_providers.forEach(function (provider) {
-      process.stdin.pipe(provider.stream);
-    });
-    process.stdin.resume();
+    outStreams.forEach(function (stream) {
+      process.stdin.pipe(stream)
+    })
   }
-}
-
-function done() {
-  stream_providers.forEach(function (provider) {
-    provider.done();
-  });
 }

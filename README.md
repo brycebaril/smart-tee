@@ -1,52 +1,33 @@
-# smart-tee
-
-==Note!==
-This package currently does not yet work with 0.10.x+ I'll be releasing an update soon.
+smart-tee
+=========
 
 A node.js "smart" work-alike to the unix "tee" command. Takes stdin and pipes it to any arbitrary streams you configure.
 
 For example, let's say you wanted to run your program and pipe the output to all of {console, rotated log files, POST to your tsdb}. This lets you do that via:
 
 ```bash
-$ node app.js 2>&1 | smart-tee config.json
+$ node app.js 2>&1 | smart-tee --s my_cool_tsdb --s stream-file-archive --s stdout --path logs/app-%Y-%m-%d.log --compress true
 ```
 
-# included streams
+custom streams
+--------------
 
-* Echo: echo stdin back to stdout
-* Time-File: Automatically save stdin to log files, and rotate them based on a config. Inspired by cronolog.
+Plays well with others! For custom streams, it expects them to be writable, and that they export a function that takes a config object and returns the writable stream. See [stream-file-archive](http://npm.im/stream-file-archive) or the [examples](https://github.com/brycebaril/smart-tee/tree/master/examples) folder.
 
-# custom streams
+configuration
+-------------
 
-* Creating a custom stream is easy -- it must provide an object with the following:
-  * Contain a Writable Stream object as it's "stream" attribute.
-  * Implements EventEmitter and may emit a "repipe" event to force all streams to allow it to reset the input stream.
-  * Implements a done() function for any required cleanup.
+Configuration is done on the command-line. Try not to use conflicting option names. (e.g. path)
 
-See the time_file.js stream provider for a complete example.
+Built-in options
+----------------
 
-# configuration
+  * -s `stream-module` the name or path of a stream module to require & pipe to
+  * -s stdout pipe back to stdout
+  * -s stderr pipe back to stderr
 
-Configuration uses the flatiron/nconf library. You can invoke it with a json file as the first argument containing your configuration, or specify flags on the command-line or ENV. Each loaded provider can look for its own configuration values. It listens two two by default:
-
-* PROVIDERS -- a list of stream providers to use, generally specify the full path to the provider's .js file.
-* echo -- echo stdin back to stdout. Useful for running on the console but still using the logic from your other streams
-
-# usage
-
-TODO
-
-# TODO
-
-* Tests
-* More work
-  * usage
-  * allow usage to write usage based on loaded providers
-  * prepare for new streams2 work
-* Documentation
-* More streams
-
-# license
+LICENSE
+=======
 
 (The MIT License)
 

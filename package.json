@@ -4,8 +4,8 @@
   "version": "0.1.2",
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
-    "nconf": ">=0.6.x",
-    "mkdirp": ">=0.3.x"
+    "mkdirp": "~0.3.5",
+    "optimist": "~0.5.2"
   },
   "keywords": [
     "tee",
@@ -14,9 +14,19 @@
     "rotation",
     "pipes"
   ],
-  "repository": {"type": "git", "url": "http://github.com/brycebaril/smart-tee.git"},
-  "bin": { "smart-tee": "./bin/smart-tee.js" },
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/brycebaril/smart-tee.git"
+  },
+  "bin": {
+    "smart-tee": "./bin/smart-tee.js"
+  },
   "main": "./bin/smart-tee",
   "preferGlobal": true,
-  "engines": { "node": "*" }
+  "engines": {
+    "node": "*"
+  },
+  "devDependencies": {
+    "readable-stream": "~1.0.2"
+  }
 }
