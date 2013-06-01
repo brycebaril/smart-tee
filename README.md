@@ -22,9 +22,9 @@ Configuration is done on the command-line. Try not to use conflicting option nam
 Built-in options
 ----------------
 
-  * -s `stream-module` the name or path of a stream module to require & pipe to
-  * -s stdout pipe back to stdout
-  * -s stderr pipe back to stderr
+  * `-s stream-module` the name or path of a stream module to require & pipe to
+  * `-s stdout` pipe back to stdout
+  * `-s stderr` pipe back to stderr
 
 LICENSE
 =======
