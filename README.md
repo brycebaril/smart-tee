@@ -12,7 +12,7 @@ $ node app.js 2>&1 | smart-tee --s my_cool_tsdb --s stream-file-archive --s stdo
 custom streams
 --------------
 
-Plays well with others! For custom streams, it expects them to be writable, and that they export a function that takes a config object and returns the writable stream. See [stream-file-archive](http://npm.im/stream-file-archive) or the [examples](https://github.com/brycebaril/smart-tee/tree/master/examples) folder.
+Plays well with others! For custom streams, it expects them to be writable, and that they export a function that takes a config object and returns the writable stream. See [stream-file-archive](http://npm.im/stream-file-archive) or the [examples](https://github.com/brycebaril/smart-tee/tree/master/example) folder.
 
 configuration
 -------------
