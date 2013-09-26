@@ -1,6 +1,11 @@
 smart-tee
 =========
 
+[![NPM](https://nodei.co/npm/smart-tee.png)](https://nodei.co/npm/smart-tee/)
+
+[![david-dm](https://david-dm.org/brycebaril/smart-tee.png)](https://david-dm.org/brycebaril/smart-tee/)
+[![david-dm](https://david-dm.org/brycebaril/smart-tee/dev-status.png)](https://david-dm.org/brycebaril/smart-tee#info=devDependencies/)
+
 A node.js "smart" work-alike to the unix "tee" command. Takes stdin and pipes it to any arbitrary streams you configure.
 
 For example, let's say you wanted to run your program and pipe the output to all of {console, rotated log files, POST to your tsdb}. This lets you do that via:
