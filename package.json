@@ -1,7 +1,7 @@
 {
   "name": "smart-tee",
   "description": "Akin to the unix 'tee' command, takes stdin as a stream and lets you do what you want with it. Includes a log rotator.",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "author": "Bryce B. Baril <bryce@ravenwall.com>",
   "dependencies": {
     "mkdirp": "~0.5.0",
